@@ -1,5 +1,5 @@
-
-×îºóµ÷ÓÃµÄÊÇkubeletºÍkube-proxy
+ï»¿
+æœ€åè°ƒç”¨çš„æ˜¯kubeletå’Œkube-proxy
 
 ```
 func startKubelet(k KubeletBootstrap, podCfg *config.PodConfig, kc *KubeletConfig) {
