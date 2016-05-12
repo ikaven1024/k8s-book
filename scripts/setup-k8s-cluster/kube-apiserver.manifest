@@ -1,0 +1,69 @@
+{
+    "apiVersion":"v1",
+    "kind":"Pod",
+    "metadata":{
+        "name":"kube-apiserver",
+        "namespace":"kube-system"
+    },
+    "spec":{
+        "hostNetwork":true,
+        "containers":[
+            {
+                "name":"kube-apiserver",
+                "image":"kube-apiserver:1.2.0",
+                "command":[
+                    "/bin/sh",
+                    "-c",
+                    "kube-apiserver --insecure-bind-address=0.0.0.0 --insecure-port=8080 --service-cluster-ip-range=10.254.0.0/16 --log_dir=/var/log/kube  --logtostderr=true --etcd-servers=http://127.0.0.1:4001 --allow_privileged=false 1>>/var/log/kube-apiserver.log 2>&1"
+                ],
+                "livenessProbe":{
+                    "httpGet":{
+                        "host":"127.0.0.1",
+                        "port":8080,
+                        "path":"/healthz"
+                    },
+                    "initialDelaySeconds":15,
+                    "timeoutSeconds":15
+                },
+                "ports":[
+                    {
+                        "name": "https",
+                        "containerPort": 433,
+                        "hostPort": 433
+                    },
+                    {
+                        "name": "local",
+                        "containerPort": 8080,
+                        "hostPort": 8080
+                    }
+                ],
+                "volumeMounts":[
+                    {
+                        "name": "srvkube",
+                        "mountPath": "/srv/kubernetes/",
+                        "readOnly": true
+                    },
+                    {
+                        "name":"logfile",
+                        "mountPath":"/var/log/kube-apiserver.log",
+                        "readOnly":false
+                    }
+                ]
+            }
+        ],
+        "volumes":[
+            {
+                "name": "srvkube",
+                "hostPath": {
+                    "path": "/srv/kubernetes/"
+                }
+            },
+            {
+                "name":"logfile",
+                "hostPath":{
+                    "path":"/var/log/kube-apiserver.log"
+                }
+            }
+        ]
+    }
+}
