@@ -1,0 +1,1 @@
+DAEMON_ARGS="$DAEMON_ARGS --api-servers=http://127.0.0.1:8080 --config=/etc/kubernetes/manifests --v=2 --allow-privileged=true"

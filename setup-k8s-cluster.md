@@ -2,25 +2,47 @@
 
 ## 0. 介绍
 
+### etcd
+**/etc/kubernetes/manifests/etcd.manifest**
+[/etc/kubernetes/manifests/etcd.manifest](scripts/setup-k8s-cluster/etcd.manifest) 
+```
+touch /var/log/etcd.log
+```
 
 
-## 1. kubelet
+
+### apiserver
+**/etc/kubernetes/manifests/apiserver.manifest**
+[/etc/kubernetes/manifests/apiserver.manifest](scripts/setup-k8s-cluster/apiserver.manifest) 
+### controller-manager
+**/etc/kubernetes/manifests/controller-manager.manifest**
+[/etc/kubernetes/manifests/controller-manager.manifest](scripts/setup-k8s-cluster/controller-manager.manifest) 
+### scheduler
+**/etc/kubernetes/manifests/scheduler.manifest**
+[/etc/kubernetes/manifests/scheduler.manifest](scripts/setup-k8s-cluster/scheduler.manifest) 
+
+###  kubelet
 [/etc/default/kubelet](scripts/setup-k8s-cluster/kubelet.default)  
 [/etc/init.d/kubelet](scripts/setup-k8s-cluster/kubelet)  
 /usr/local/bin/kubelet
 
-## etcd
-**/etc/kubernetes/manifests/etcd.manifest**
-[/etc/kubernetes/manifests/etcd.manifest](scripts/setup-k8s-cluster/etcd.manifest) 
-## apiserver
-**/etc/kubernetes/manifests/apiserver.manifest**
-[/etc/kubernetes/manifests/apiserver.manifest](scripts/setup-k8s-cluster/apiserver.manifest) 
-## controller-manager
-**/etc/kubernetes/manifests/controller-manager.manifest**
-[/etc/kubernetes/manifests/controller-manager.manifest](scripts/setup-k8s-cluster/controller-manager.manifest) 
-## scheduler
-**/etc/kubernetes/manifests/scheduler.manifest**
-[/etc/kubernetes/manifests/scheduler.manifest](scripts/setup-k8s-cluster/scheduler.manifest) 
+添加服务：
+
+```
+root@ubuntu-Server:~# chmod +x /etc/init.d/kubelet
+root@ubuntu-Server:~# update-rc.d kubelet defaults
+ Adding system startup for /etc/init.d/kubelet ...
+   /etc/rc0.d/K20kubelet -> ../init.d/kubelet
+   /etc/rc1.d/K20kubelet -> ../init.d/kubelet
+   /etc/rc6.d/K20kubelet -> ../init.d/kubelet
+   /etc/rc2.d/S20kubelet -> ../init.d/kubelet
+   /etc/rc3.d/S20kubelet -> ../init.d/kubelet
+   /etc/rc4.d/S20kubelet -> ../init.d/kubelet
+   /etc/rc5.d/S20kubelet -> ../init.d/kubelet
+root@ubuntu-Server:~# service kubelet start
+ * Starting The Kubernetes container manager kubelet                          [ OK ]
+```
+
 
 ## 参数说明
 
