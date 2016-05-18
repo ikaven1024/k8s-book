@@ -1,0 +1,67 @@
+{
+    "apiVersion":"v1",
+    "kind":"Pod",
+    "metadata":{
+        "name":"hollow-node-192.168.0.108-1",
+        "namespace":"kubemark"
+    },
+    "spec":{
+        "containers":[
+            {
+                "name": "hollow-kubelet-1",
+                "image": "kubemark:1.2.0",
+                "ports": [
+                    {
+                        "containerPort": 4194
+                    },
+                    {
+                        "containerPort": 10250
+                    },
+                    {
+                        "containerPort": 10255
+                    }
+                ],
+                "command":[
+                    "./kubemark.sh"
+                ],
+                "args": [
+                    "--v=3",
+                    "--morph=kubelet"
+                ],
+                "volumeMounts":[
+                    {
+                        "name": "kubeconfig-volume",
+                        "mountPath": "/kubeconfig",
+                        "readOnly":true
+                    }
+                ]
+            },
+            {
+                "name": "hollow-proxy-1",
+                "image": "kubemark:1.2.0",
+                "command":[
+                    "./kubemark.sh"
+                ],
+                "args": [
+                    "--v=3",
+                    "--morph=proxy"
+                ],
+                "volumeMounts":[
+                    {
+                        "name": "kubeconfig-volume",
+                        "mountPath": "/kubeconfig",
+                        "readOnly":true
+                    }
+                ]
+            }
+        ],
+        "volumes":[
+            {
+                "name":"kubeconfig-volume",
+                "hostPath":{
+                    "path":"/etc/kubernetes"
+                }
+            }
+        ]
+    }
+}

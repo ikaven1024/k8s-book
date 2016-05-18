@@ -98,3 +98,8 @@ kube-scheduler --master=127.0.0.1:8080
 | 参数     | 说明   |
 | ------ | ---- |
 | master |      |
+## kubemark
+
+[/etc/kubernetes/kubeconfig](scripts/setup-k8s-cluster/kubeconfig)
+[/etc/kubernetes/manifests/hollow-node-1.manifest](scripts/setup-k8s-cluster/hollow-node-1.manifest)
+
