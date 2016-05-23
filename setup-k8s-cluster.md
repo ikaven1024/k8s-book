@@ -3,22 +3,16 @@
 ## 0. 介绍
 
 ### etcd
-**/etc/kubernetes/manifests/etcd.manifest**
 [/etc/kubernetes/manifests/etcd.manifest](scripts/setup-k8s-cluster/etcd.manifest) 
 ```
 touch /var/log/etcd.log
 ```
 
-
-
 ### apiserver
-**/etc/kubernetes/manifests/apiserver.manifest**
 [/etc/kubernetes/manifests/apiserver.manifest](scripts/setup-k8s-cluster/apiserver.manifest) 
 ### controller-manager
-**/etc/kubernetes/manifests/controller-manager.manifest**
 [/etc/kubernetes/manifests/controller-manager.manifest](scripts/setup-k8s-cluster/controller-manager.manifest) 
 ### scheduler
-**/etc/kubernetes/manifests/scheduler.manifest**
 [/etc/kubernetes/manifests/scheduler.manifest](scripts/setup-k8s-cluster/scheduler.manifest) 
 
 ###  kubelet
@@ -102,4 +96,3 @@ kube-scheduler --master=127.0.0.1:8080
 
 [/etc/kubernetes/kubeconfig](scripts/setup-k8s-cluster/kubeconfig)
 [/etc/kubernetes/manifests/hollow-node-1.manifest](scripts/setup-k8s-cluster/hollow-node-1.manifest)
-

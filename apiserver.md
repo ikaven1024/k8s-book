@@ -10,6 +10,8 @@ func New(c *Config) (*Master, error)
 ....func (s *GenericAPIServer) InstallAPIGroups(groupsInfo []APIGroupInfo) error
 ......func (s *GenericAPIServer) installAPIGroup(apiGroupInfo *APIGroupInfo) error
 func (s *GenericAPIServer) Run(options *ServerRunOptions)
+..secureServer.ListenAndServeTLS()
+..http.ListenAndServe()
 ```
 
 
@@ -72,6 +74,4 @@ type Etcd struct {
 	Storage storage.Interface
 }
 ```
-
-
 
