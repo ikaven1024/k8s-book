@@ -1,4 +1,4 @@
-## ??????
+## 主要调用堆栈
 
 ```go
 run(s *options.KubeletServer, kcfg *KubeletConfig) (err error)
@@ -10,7 +10,7 @@ run(s *options.KubeletServer, kcfg *KubeletConfig) (err error)
 ....kcfg.Recorder = eventBroadcaster.NewRecorder(...)     // Event
 ....capabilities.Setup(kcfg.AllowPrivileged, privilegedSources, 0)  // capabilities
 ....CreateAndInitKubelet(...)
-......makePodSourceConfig(...)      // pod???manifest, url, apiserver
+......makePodSourceConfig(...)      // pod来源：manifest, url, apiserver
 ......NewMainKubelet(...)
 ......StartGarbageCollection()
 ....startKubelet(k KubeletBootstrap, podCfg *config.PodConfig, kc *KubeletConfig)
@@ -21,18 +21,18 @@ run(s *options.KubeletServer, kcfg *KubeletConfig) (err error)
 ..http.ListenAndServe()  // Healthz Server
 ```
 
-## ????
+## 主要任务
 
-| ??                | ??                                   | ??                                       |
+| 任务                | 周期                                   | 说明                                       |
 | ----------------- | ------------------------------------ | ---------------------------------------- |
-| eventBroadcaster  | <- eventBroadcaster.watch.result     | ??Event??EventClient????sink??           |
+| eventBroadcaster  | <- eventBroadcaster.watch.result     | 打印Event，若EventClient不空则sink到Event        |
 | containerGC       | 1min                                 |                                          |
 | imageGC           | 5min                                 |                                          |
-| logServer         |                                      | ?????/logs/                              |
-| imageManager      | 5min                                 | ?????????(??????????????)? ???imageManager.imageRecords? |
-| containerManager  |                                      | 1. ensureState, 1min 2. ???????RuntimeCgroupsName?KubeletCgroupsName, 5min |
-| oomWatcher        | <- ow.cadvisor.WatchEvents().channel | ??OOM Event                              |
-| resourceAnalyzer  | 1min                                 | ????pod?????????????                     |
+| logServer         |                                      | 日志服务器：/logs/                             |
+| imageManager      | 5min                                 | 镜像使用情况（发现时间，最近使用时间，大小），保存在imageManager.imageRecords结构 |
+| containerManager  |                                      | Cgroup。1. ensureState, 1min 2. 更新RuntimeCgroupsName, KubeletCgroupsName, 5min |
+| oomWatcher        | <- ow.cadvisor.WatchEvents().channel | 检测OOM Event                              |
+| resourceAnalyzer  | 1min                                 | 每个pod启动收集Volume信息的协程                     |
 | syncNodeStatus    |                                      |                                          |
 | syncNetworkStatus |                                      |                                          |
 | updateRuntimeUp   |                                      |                                          |
@@ -41,11 +41,11 @@ run(s *options.KubeletServer, kcfg *KubeletConfig) (err error)
 | probeManager      |                                      |                                          |
 | pleg              |                                      |                                          |
 | syncLoop          |                                      |                                          |
-| Healthz           | ???5s??                              | Health server: /healthz                  |
+| Healthz           | 5s重启                                 | Health server: /healthz                  |
 
 
 
-## ????
+## 主要源码
 
 
 ```
