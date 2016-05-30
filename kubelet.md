@@ -38,7 +38,7 @@ run(s *options.KubeletServer, kcfg *KubeletConfig) (err error)
 | updateRuntimeUp   |                                      |                                          |
 | podKiller         |                                      | 从kl.podKillingCh中读取pod，并启动协程杀之           |
 | statusManager     | 10s                                  | 1. 更新来自m.podStatusChannel的pod 2. 每10s syncBatch() |
-| probeManager      |                                      |                                          |
+| probeManager      | readiness, 就绪信息                      |                                          |
 | pleg              |                                      | pod生存周期事件。                               |
 | syncLoop          |                                      |                                          |
 | Healthz           | 5s重启                                 | Health server: /healthz                  |
@@ -97,6 +97,7 @@ klet.containerRuntime = dockertools.NewDockerManager{}
 klet.pleg = pkg/kubelet/pleg/generic.go#GenericPLEG {
     runtime: klet.containerRuntime
     cache: klet.podCache
+    eventChannel: make(chan *PodLifecycleEvent, channelCapacity)
 }
 
 klet.imageManager = pkg/kubelet/image_manager.go#realImageManager {
@@ -137,7 +138,7 @@ klet.podKillingCh = make(chan *kubecontainer.PodPair, podKillingChannelCapacity)
 ## 主要源码
 
 
-```
+```go
 func startKubelet(k KubeletBootstrap, podCfg *config.PodConfig, kc *KubeletConfig) {
    // start the kubelet
    go wait.Until(func() { k.Run(podCfg.Updates()) }, 0, wait.NeverStop)
