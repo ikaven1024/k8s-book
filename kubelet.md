@@ -25,6 +25,8 @@ run(s *options.KubeletServer, kcfg *KubeletConfig) (err error)
 
 | 任务                | 周期                                   | 说明                                       |
 | ----------------- | ------------------------------------ | ---------------------------------------- |
+| serviceLW         |                                      |                                          |
+| nodeLW            |                                      |                                          |
 | eventBroadcaster  | <- eventBroadcaster.watch.result     | 打印Event，若EventClient不空则sink到Event        |
 | containerGC       | 1min                                 |                                          |
 | imageGC           | 5min                                 |                                          |
