@@ -11,6 +11,7 @@ func New(c *Config) (*Master, error)
 ......xxxStorage := xxxetcd.NewStorage(...)
 ....func (s *GenericAPIServer) InstallAPIGroups(groupsInfo []APIGroupInfo) error
 ......func (s *GenericAPIServer) installAPIGroup(apiGroupInfo *APIGroupInfo) error
+........func (g *APIGroupVersion) InstallREST(container *restful.Container) error
 func (s *GenericAPIServer) Run(options *ServerRunOptions)
 ..secureServer.ListenAndServeTLS()
 ..http.ListenAndServe()
@@ -63,5 +64,12 @@ func UndecoratedStorage(...) {
 
 ![](images/apiserver-storage.png)
 
- 
+## 2 API
 
+```go
+type Master struct {
+	v1ResourcesStorage map[string]rest.Storage
+
+    xxxRegistry xxx.Regist  //node, namespace, service, endpoint...
+}
+```
